@@ -49,7 +49,13 @@
 
     {#each series as points, serie}
       {#each points as point}
-        <circle class:selected={point == selected} cx={point[0]} cy={point[1]} r=3 fill=white on:click|preventDefault={() => handleClick(serie+1, point)}/>
+        <circle
+          class:selected={selected && point == selected.point && serie == selected.series-1}
+          cx={point[0]}
+          cy={point[1]}
+          r=3
+          fill=white
+          on:click|preventDefault={() => handleClick(serie+1, point)}/>
       {/each}
     {/each}
   </svg>
