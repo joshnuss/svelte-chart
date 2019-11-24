@@ -1,5 +1,5 @@
 <script>
-	import Chart from './components/Chart.svelte'
+  import Chart from './components/Chart.svelte'
 
   let selected = null;
 
