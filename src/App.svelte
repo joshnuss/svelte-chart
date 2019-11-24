@@ -1,21 +1,32 @@
 <script>
   import Chart from './components/Chart.svelte'
 
+  const colors = ["teal", "salmon"]
   let selected = null;
-
-  let points = [
-    [ 0, 120 ],
-    [ 20, 60 ],
-    [ 40, 80 ],
-    [ 60, 20 ],
-    [ 65, 40 ]
+  let series = [
+    [
+      [ 0, 120 ],
+      [ 20, 60 ],
+      [ 40, 80 ],
+      [ 60, 20 ],
+      [ 65, 40 ]
+    ],
+    [
+      [ 0, 125 ],
+      [ 20, 65 ],
+      [ 40, 85 ],
+      [ 60, 25 ],
+      [ 65, 45 ]
+    ]
   ]
 
-  $: lastX = points[points.length-1][0]
+  let lastX = 65;
 
   function add() {
-    points.push([lastX + randomNumber(20), randomNumber(80)])
-    points = points
+    lastX += randomNumber(20)
+    series[0].push([lastX, randomNumber(80)])
+    series[1].push([lastX, randomNumber(80)])
+    series = series
   }
 
   function randomNumber(max) {
@@ -24,9 +35,11 @@
 </script>
 
 <main>
-  <Chart {points} bind:selected/>
+  <Chart {series} {colors} bind:selected/>
 
-  <button on:click|preventDefault={add}>Add Point</button>
+  <button on:click|preventDefault={add}>Add Points</button>
 
-  {selected}
+  {#if selected}
+    Series: {selected.series}, Point: {selected.point}
+  {/if}
 </main>

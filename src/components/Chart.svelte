@@ -1,12 +1,17 @@
 <script>
-  export let points;
+  export let series;
+  export let colors;
   export let selected;
 
-  $: expression = points.map(([x, y]) => `${x} ${y}`).join("\n")
-
-  function handleClick(point) {
-    selected = point
+  function lineExpression(points) {
+    return points.map(([x, y]) => `${x} ${y}`).join("\n");
   }
+
+  function handleClick(series, point) {
+    selected = {series, point}
+  }
+
+  $: lines = series.map(lineExpression)
 </script>
 
 <style>
@@ -32,16 +37,20 @@
 
 <div class="chart">
   <svg viewBox="0 0 500 100">
-    <polyline
-       fill="none"
-       stroke="#0074d9"
-       stroke-width="2"
-       stroke-linecap="round"
-       stroke-linejoin="round"
-       points={expression}/>
+    {#each lines as expression, index}
+      <polyline
+         fill="none"
+         stroke={colors[index]}
+         stroke-width="2"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         points={expression}/>
+    {/each}
 
-    {#each points as point}
-      <circle class:selected={point == selected} cx={point[0]} cy={point[1]} r=3 fill=white on:click|preventDefault={() => handleClick(point)}/>
+    {#each series as points, serie}
+      {#each points as point}
+        <circle class:selected={point == selected} cx={point[0]} cy={point[1]} r=3 fill=white on:click|preventDefault={() => handleClick(serie+1, point)}/>
+      {/each}
     {/each}
   </svg>
 </div>
