@@ -1,30 +1,32 @@
 <script>
-	export let name;
+	import Chart from './components/Chart.svelte'
+
+  let selected = null;
+
+  let points = [
+    [ 0, 120 ],
+    [ 20, 60 ],
+    [ 40, 80 ],
+    [ 60, 20 ],
+    [ 65, 40 ]
+  ]
+
+  $: lastX = points[points.length-1][0]
+
+  function add() {
+    points.push([lastX + randomNumber(20), randomNumber(80)])
+    points = points
+  }
+
+  function randomNumber(max) {
+    return Math.round(Math.random() * 100) % max
+  }
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+  <Chart {points} bind:selected/>
+
+  <button on:click|preventDefault={add}>Add Point</button>
+
+  {selected}
 </main>
-
-<style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
-</style>
