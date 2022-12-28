@@ -4,20 +4,21 @@ import resolve from '@rollup/plugin-node-resolve';
 import livereload from 'rollup-plugin-livereload';
 import { terser } from 'rollup-plugin-terser';
 import css from 'rollup-plugin-css-only';
+import { spawn } from 'child_process'
 
 const production = !process.env.ROLLUP_WATCH;
 
-function serve() {
+function serve () {
 	let server;
 
-	function toExit() {
+	function toExit () {
 		if (server) server.kill(0);
 	}
 
 	return {
-		writeBundle() {
+		writeBundle () {
 			if (server) return;
-			server = require('child_process').spawn('npm', ['run', 'start', '--', '--dev'], {
+			spawn('npm', ['run', 'start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
 				shell: true
 			});
