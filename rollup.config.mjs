@@ -8,15 +8,15 @@ import { spawn } from 'child_process'
 
 const production = !process.env.ROLLUP_WATCH;
 
-function serve () {
+function serve() {
 	let server;
 
-	function toExit () {
+	function toExit() {
 		if (server) server.kill(0);
 	}
 
 	return {
-		writeBundle () {
+		writeBundle() {
 			if (server) return;
 			spawn('npm', ['run', 'start', '--', '--dev'], {
 				stdio: ['ignore', 'inherit', 'inherit'],
